@@ -1,3 +1,4 @@
+import Background from "@/components/background";
 import "@/styles/globals.css";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -12,7 +13,10 @@ interface Props {
 export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} text-gray-900`}>
+        <main className="p-4">{children}</main>
+        <Background />
+      </body>
     </html>
   );
 }
