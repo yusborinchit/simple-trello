@@ -14,7 +14,7 @@ export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="en">
       <body className={`${inter.className} text-gray-900`}>
-        <main className="p-4">{children}</main>
+        {children}
         <Background />
       </body>
     </html>

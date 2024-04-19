@@ -1,23 +1,25 @@
 "use client";
 
 import { type Task } from "@/types";
-import { FormEvent, useState } from "react";
-import TaskCard from "./task-card";
+import { type DragEvent, type FormEvent } from "react";
 import TaskForm from "./task-form";
+import TaskList from "./task-list";
 
-const DEFAULT_TASKS: Task[] = [
-  { id: crypto.randomUUID(), title: "Take the trash out" },
-  {
-    id: crypto.randomUUID(),
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do magna",
-  },
-  { id: crypto.randomUUID(), title: "Buy groceries: milk, eggs, bread" },
-];
+interface Props {
+  id: string;
+  title: string;
+  tasks: Task[];
+  addTask: (boardId: string, task: Task) => void;
+  moveTask: (targetBoardId: string, boardId: string, taskId: string) => void;
+}
 
-export default function BoardCard() {
-  const [tasks, setTasks] = useState<Task[]>(DEFAULT_TASKS);
-
+export default function BoardCard({
+  id,
+  title,
+  tasks,
+  addTask,
+  moveTask,
+}: Readonly<Props>) {
   function handleAddTask(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -27,29 +29,50 @@ export default function BoardCard() {
     const taskTitle = `${formData.get("task")}`;
     if (!taskTitle) return;
 
-    const task = {
+    addTask(id, {
       id: crypto.randomUUID(),
       title: taskTitle,
-    };
+    });
 
-    setTasks((prevTasks) => [...prevTasks, task]);
     form.reset();
   }
 
+  function handleDragEnter(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+  }
+
+  function handleDragOver(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+  }
+
+  function handleDrop(event: DragEvent<HTMLDivElement>) {
+    const { currentTarget, dataTransfer } = event;
+
+    const targetBoardId = currentTarget.dataset.boardId;
+    const taskId = dataTransfer.getData("taskId");
+    const boardId = dataTransfer.getData("boardId");
+
+    if (!targetBoardId || !taskId || !boardId) return;
+
+    moveTask(targetBoardId, boardId, taskId);
+  }
+
   return (
-    <section className="max-w-xs rounded bg-gray-200 p-4">
+    <section
+      data-board-id={id}
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+      className="group h-min max-w-xs rounded bg-gray-200 p-4 data-[is-over=true]:bg-blue-200"
+    >
       <header>
-        <h2 className="text-2xl font-semibold text-gray-800">Hello World</h2>
+        <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
       </header>
-      <div className="mt-2">
-        <p className="text-sm text-gray-500">Tasks: 3</p>
-        <ul className="mt-1 flex flex-col gap-2">
-          {tasks.map((task) => (
-            <TaskCard key={task.id} id={task.id} title={task.title} />
-          ))}
-        </ul>
+      <p className="mt-2 text-sm text-gray-500">Tasks: {tasks.length}</p>
+      <TaskList boardId={id} tasks={tasks} />
+      <footer>
         <TaskForm handleAddTask={handleAddTask} />
-      </div>
+      </footer>
     </section>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { useId, type FormEvent } from "react";
 
 interface Props {
@@ -10,7 +12,7 @@ export default function TaskForm({ handleAddTask }: Readonly<Props>) {
   return (
     <form
       onSubmit={handleAddTask}
-      className="mt-10 flex items-center rounded bg-gray-300 shadow shadow-gray-800/30"
+      className="mt-12 flex items-center rounded bg-gray-300 shadow shadow-gray-800/30"
     >
       <input
         id={id}
