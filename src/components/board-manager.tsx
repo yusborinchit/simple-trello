@@ -39,6 +39,19 @@ export default function BoardManager() {
 
   useEffect(() => setBoards(DEFAULT_BOARDS), []);
 
+  function changeTitle(boardId: string, title: string) {
+    const boardIdx = boards.findIndex(({ id }) => id === boardId);
+
+    if (boardIdx === -1) return;
+
+    const draft = [...boards];
+
+    const board = draft[boardIdx];
+    board.title = title;
+
+    setBoards(draft);
+  }
+
   function addTask(boardId: string, task: Task) {
     const boardIdx = boards.findIndex(({ id }) => id === boardId);
 
@@ -82,6 +95,7 @@ export default function BoardManager() {
           id={board.id}
           title={board.title}
           tasks={board.tasks}
+          changeTitle={changeTitle}
           addTask={addTask}
           moveTask={moveTask}
         />

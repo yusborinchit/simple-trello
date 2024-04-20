@@ -13,7 +13,7 @@ interface Props {
 export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} text-gray-900`}>
+      <body className={`${inter.className} text-gray-800`}>
         {children}
         <Background />
       </body>

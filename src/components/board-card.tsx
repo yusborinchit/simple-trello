@@ -1,14 +1,16 @@
 "use client";
 
 import { type Task } from "@/types";
-import { type DragEvent, type FormEvent } from "react";
-import TaskForm from "./task-form";
+import { type DragEvent } from "react";
+import AddTaskForm from "./add-task-form";
+import BoardHeader from "./board-header";
 import TaskList from "./task-list";
 
 interface Props {
   id: string;
   title: string;
   tasks: Task[];
+  changeTitle: (boardId: string, title: string) => void;
   addTask: (boardId: string, task: Task) => void;
   moveTask: (targetBoardId: string, boardId: string, taskId: string) => void;
 }
@@ -17,26 +19,10 @@ export default function BoardCard({
   id,
   title,
   tasks,
+  changeTitle,
   addTask,
   moveTask,
 }: Readonly<Props>) {
-  function handleAddTask(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    const taskTitle = `${formData.get("task")}`;
-    if (!taskTitle) return;
-
-    addTask(id, {
-      id: crypto.randomUUID(),
-      title: taskTitle,
-    });
-
-    form.reset();
-  }
-
   function handleDragEnter(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
   }
@@ -65,14 +51,10 @@ export default function BoardCard({
       onDrop={handleDrop}
       className="group h-min max-w-xs rounded bg-gray-200 p-4 data-[is-over=true]:bg-blue-200"
     >
-      <header>
-        <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
-      </header>
+      <BoardHeader boardId={id} title={title} changeTitle={changeTitle} />
       <p className="mt-2 text-sm text-gray-500">Tasks: {tasks.length}</p>
       <TaskList boardId={id} tasks={tasks} />
-      <footer>
-        <TaskForm handleAddTask={handleAddTask} />
-      </footer>
+      <AddTaskForm boardId={id} addTask={addTask} />
     </section>
   );
 }
