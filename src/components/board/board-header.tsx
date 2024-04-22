@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import CheckIcon from "./icons/check-icon";
-import EditIcon from "./icons/edit-icon";
+import CheckIcon from "../icons/check-icon";
+import EditIcon from "../icons/edit-icon";
 
 interface Props {
   boardId: string;

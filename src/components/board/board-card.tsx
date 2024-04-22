@@ -1,0 +1,50 @@
+"use client";
+
+import { useDragAndDrop } from "@/hooks/useDragAndDrop";
+import { type Task } from "@/types";
+import AddTaskForm from "./add-task-form";
+import BoardHeader from "./board-header";
+import TaskCard from "./task-card";
+
+interface Props {
+  id: string;
+  title: string;
+  tasks: Task[];
+  changeTitle: (boardId: string, title: string) => void;
+  addTask: (boardId: string, task: Task) => void;
+  moveTask: (targetBoardId: string, boardId: string, taskId: string) => void;
+}
+
+export default function BoardCard({
+  id,
+  title,
+  tasks,
+  changeTitle,
+  addTask,
+  moveTask,
+}: Readonly<Props>) {
+  const { dragStart, dragEnter, dragOver, drop } = useDragAndDrop();
+
+  return (
+    <section
+      data-board-id={id}
+      onDragEnter={dragEnter}
+      onDragOver={dragOver}
+      onDrop={drop(moveTask)}
+      className="group h-min max-w-[270px] rounded bg-gray-200 p-4 data-[is-over=true]:bg-blue-200"
+    >
+      <BoardHeader boardId={id} title={title} changeTitle={changeTitle} />
+      <p className="mt-2 text-sm text-gray-500">Tasks: {tasks.length}</p>
+      <ul className="mt-1 flex flex-col gap-2">
+        {tasks.map((task) => (
+          <TaskCard
+            key={task.id}
+            title={task.title}
+            handleDragStart={dragStart(task.id, id)}
+          />
+        ))}
+      </ul>
+      <AddTaskForm boardId={id} addTask={addTask} />
+    </section>
+  );
+}

@@ -1,10 +1,9 @@
-"use client";
-
 import { type Board, type Task } from "@/types";
 import { useEffect, useState } from "react";
-import BoardCard from "./board-card";
 
-const DEFAULT_BOARDS: Board[] = [
+const DEFAULT_BOARD_TITLE = "Board Title";
+
+const DEFAULT_BOARDS = [
   {
     id: crypto.randomUUID(),
     title: "Board 1",
@@ -34,10 +33,24 @@ const DEFAULT_BOARDS: Board[] = [
   },
 ];
 
-export default function BoardManager() {
+export function useBoard() {
   const [boards, setBoards] = useState<Board[]>([]);
 
-  useEffect(() => setBoards(DEFAULT_BOARDS), []);
+  useEffect(() => {
+    setBoards(DEFAULT_BOARDS);
+  }, []);
+
+  function addBoard() {
+    const draft = [...boards];
+
+    draft.push({
+      id: crypto.randomUUID(),
+      title: DEFAULT_BOARD_TITLE,
+      tasks: [],
+    });
+
+    setBoards(draft);
+  }
 
   function changeTitle(boardId: string, title: string) {
     const boardIdx = boards.findIndex(({ id }) => id === boardId);
@@ -87,19 +100,5 @@ export default function BoardManager() {
     setBoards(draft);
   }
 
-  return (
-    <>
-      {boards.map((board) => (
-        <BoardCard
-          key={board.id}
-          id={board.id}
-          title={board.title}
-          tasks={board.tasks}
-          changeTitle={changeTitle}
-          addTask={addTask}
-          moveTask={moveTask}
-        />
-      ))}
-    </>
-  );
+  return { boards, addBoard, changeTitle, addTask, moveTask };
 }
