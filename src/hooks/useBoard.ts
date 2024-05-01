@@ -34,10 +34,12 @@ const DEFAULT_BOARDS = [
 ];
 
 export function useBoard() {
-  const [boards, setBoards] = useState<Board[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [boards, setBoards] = useState<Board[]>(DEFAULT_BOARDS);
 
   useEffect(() => {
     setBoards(DEFAULT_BOARDS);
+    setIsLoading(false);
   }, []);
 
   function addBoard() {
@@ -100,5 +102,5 @@ export function useBoard() {
     setBoards(draft);
   }
 
-  return { boards, addBoard, changeTitle, addTask, moveTask };
+  return { boards, isLoading, addBoard, changeTitle, addTask, moveTask };
 }

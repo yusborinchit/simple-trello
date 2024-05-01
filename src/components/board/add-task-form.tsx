@@ -38,7 +38,7 @@ export default function AddTaskForm({ boardId, addTask }: Readonly<Props>) {
           id={inputId}
           name="task"
           type="text"
-          placeholder="Type here your next task"
+          placeholder="Type here..."
           className="min-w-0 flex-1 rounded bg-transparent px-4 py-2 text-gray-600 placeholder:text-gray-400"
         />
         <button

@@ -31,7 +31,7 @@ export default function BoardCard({
       onDragEnter={dragEnter}
       onDragOver={dragOver}
       onDrop={drop(moveTask)}
-      className="group h-min max-w-[270px] rounded bg-gray-200 p-4 data-[is-over=true]:bg-blue-200"
+      className="h-min w-[270px] rounded bg-gray-200 p-4"
     >
       <BoardHeader boardId={id} title={title} changeTitle={changeTitle} />
       <p className="mt-2 text-sm text-gray-500">Tasks: {tasks.length}</p>
