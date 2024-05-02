@@ -40,22 +40,24 @@ export default function BoardHeader({
             onChange={handleChangeInputTitle}
             value={inputTitle}
             placeholder="Board Title..."
-            className="w-full min-w-0 rounded bg-transparent text-2xl font-semibold text-gray-500 placeholder:text-gray-300"
+            className="w-full min-w-0 border-b-[3px] border-dashed border-purple-500 bg-transparent text-2xl font-semibold outline-none placeholder:text-gray-400"
           />
           <button
             aria-label="Accept Changes"
-            className="rounded p-1 text-gray-500 transition-[background-color,box-shadow] hover:bg-gray-300 hover:shadow hover:shadow-gray-800/30"
+            className="grid h-fit place-items-center rounded p-1 text-gray-500 transition-colors hover:bg-gray-300"
           >
             <CheckIcon width={24} height={24} />
           </button>
         </form>
       ) : (
         <>
-          <h2 className="w-full break-all text-2xl font-semibold">{title}</h2>
+          <h2 className="w-full break-all border-b-[3px] border-dashed border-transparent text-2xl font-semibold">
+            {title}
+          </h2>
           <button
             aria-label="Edit Board Title"
             onClick={() => setIsEditing(true)}
-            className="h-fit rounded p-1 text-gray-500 transition-[background-color,box-shadow] hover:bg-gray-300 hover:shadow hover:shadow-gray-800/30"
+            className="grid h-fit place-items-center rounded p-1 text-gray-500 transition-colors hover:bg-gray-300"
           >
             <EditIcon width={24} height={24} />
           </button>

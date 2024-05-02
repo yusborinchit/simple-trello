@@ -1,4 +1,10 @@
 import { type Board, type Task } from "@/types";
+import { deleteBoard } from "@/utils/boards/delete-board";
+import { fetchBoards } from "@/utils/boards/fetch-boards";
+import { insertBoard } from "@/utils/boards/insert-board";
+import { updateBoardTitle } from "@/utils/boards/update-title-board";
+import { insertTask } from "@/utils/tasks/insert-task";
+import { updateTaskBoard } from "@/utils/tasks/update-task-board";
 import { useEffect, useState } from "react";
 
 const DEFAULT_BOARD_TITLE = "Board Title";
@@ -6,57 +12,53 @@ const DEFAULT_BOARD_TITLE = "Board Title";
 const DEFAULT_BOARDS = [
   {
     id: crypto.randomUUID(),
-    title: "Board 1",
+    title: "To Do",
     tasks: [
-      { id: crypto.randomUUID(), title: "Task 1" },
-      { id: crypto.randomUUID(), title: "Task 2" },
-      { id: crypto.randomUUID(), title: "Task 3" },
-    ],
-  },
-  {
-    id: crypto.randomUUID(),
-    title: "Board 2",
-    tasks: [
-      { id: crypto.randomUUID(), title: "Task 4" },
-      { id: crypto.randomUUID(), title: "Task 5" },
-    ],
-  },
-  {
-    id: crypto.randomUUID(),
-    title: "Board 3",
-    tasks: [
-      { id: crypto.randomUUID(), title: "Task 6" },
-      { id: crypto.randomUUID(), title: "Task 7" },
-      { id: crypto.randomUUID(), title: "Task 8" },
-      { id: crypto.randomUUID(), title: "Task 9" },
+      { id: crypto.randomUUID(), title: "Follow me on Github." },
+      { id: crypto.randomUUID(), title: "Enjoy!" },
     ],
   },
 ];
 
 export function useBoard() {
   const [isLoading, setIsLoading] = useState(true);
-  const [boards, setBoards] = useState<Board[]>(DEFAULT_BOARDS);
+  const [boards, setBoards] = useState<Board[]>([]);
 
   useEffect(() => {
-    setBoards(DEFAULT_BOARDS);
-    setIsLoading(false);
+    fetchBoards().then((boards) => {
+      setBoards(boards ?? DEFAULT_BOARDS);
+      setIsLoading(false);
+    });
   }, []);
 
   function addBoard() {
     const draft = [...boards];
 
-    draft.push({
+    const board = {
       id: crypto.randomUUID(),
       title: DEFAULT_BOARD_TITLE,
       tasks: [],
-    });
+    };
+    draft.push(board);
 
     setBoards(draft);
+    insertBoard(board);
+  }
+
+  function removeBoard(boardId: string) {
+    const boardIdx = boards.findIndex(({ id }) => id === boardId);
+    if (boardIdx === -1) return;
+
+    const draft = [...boards];
+
+    draft.splice(boardIdx, 1);
+
+    setBoards(draft);
+    deleteBoard(boardId);
   }
 
   function changeTitle(boardId: string, title: string) {
     const boardIdx = boards.findIndex(({ id }) => id === boardId);
-
     if (boardIdx === -1) return;
 
     const draft = [...boards];
@@ -65,11 +67,11 @@ export function useBoard() {
     board.title = title;
 
     setBoards(draft);
+    updateBoardTitle(boardId, title);
   }
 
   function addTask(boardId: string, task: Task) {
     const boardIdx = boards.findIndex(({ id }) => id === boardId);
-
     if (boardIdx === -1) return;
 
     const draft = [...boards];
@@ -78,29 +80,37 @@ export function useBoard() {
     board.tasks.push(task);
 
     setBoards(draft);
+    insertTask(boardId, task);
   }
 
   function moveTask(targetBoardId: string, boardId: string, taskId: string) {
-    const targetBoardIndex = boards.findIndex(({ id }) => id === targetBoardId);
-    const boardIndex = boards.findIndex(({ id }) => id === boardId);
+    const targetBoardIdx = boards.findIndex(({ id }) => id === targetBoardId);
+    if (targetBoardIdx === -1) return;
 
-    if (targetBoardIndex === -1 || boardIndex === -1) return;
+    const boardIdx = boards.findIndex(({ id }) => id === boardId);
+    if (boardIdx === -1) return;
 
-    const taskIndex = boards[boardIndex].tasks.findIndex(
-      ({ id }) => id === taskId
-    );
-
-    if (taskIndex === -1) return;
+    const taskIdx = boards[boardIdx].tasks.findIndex(({ id }) => id === taskId);
+    if (taskIdx === -1) return;
 
     const draft = [...boards];
 
-    const board = draft[boardIndex];
-    const [task] = board.tasks.splice(taskIndex, 1);
-    const targetBoard = draft[targetBoardIndex];
+    const board = draft[boardIdx];
+    const [task] = board.tasks.splice(taskIdx, 1);
+    const targetBoard = draft[targetBoardIdx];
     targetBoard.tasks.push(task);
 
     setBoards(draft);
+    updateTaskBoard(targetBoardId, boardId, taskId);
   }
 
-  return { boards, isLoading, addBoard, changeTitle, addTask, moveTask };
+  return {
+    boards,
+    isLoading,
+    addBoard,
+    removeBoard,
+    changeTitle,
+    addTask,
+    moveTask,
+  };
 }

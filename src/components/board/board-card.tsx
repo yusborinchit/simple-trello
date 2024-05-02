@@ -13,6 +13,7 @@ interface Props {
   changeTitle: (boardId: string, title: string) => void;
   addTask: (boardId: string, task: Task) => void;
   moveTask: (targetBoardId: string, boardId: string, taskId: string) => void;
+  removeBoard: (boardId: string) => void;
 }
 
 export default function BoardCard({
@@ -22,6 +23,7 @@ export default function BoardCard({
   changeTitle,
   addTask,
   moveTask,
+  removeBoard,
 }: Readonly<Props>) {
   const { dragStart, dragEnter, dragOver, drop } = useDragAndDrop();
 
@@ -31,7 +33,7 @@ export default function BoardCard({
       onDragEnter={dragEnter}
       onDragOver={dragOver}
       onDrop={drop(moveTask)}
-      className="h-min w-[270px] rounded bg-gray-200 p-4"
+      className="flex h-min w-[270px] flex-col rounded bg-gray-200 p-4"
     >
       <BoardHeader boardId={id} title={title} changeTitle={changeTitle} />
       <p className="mt-2 text-sm text-gray-500">Tasks: {tasks.length}</p>
@@ -45,6 +47,12 @@ export default function BoardCard({
         ))}
       </ul>
       <AddTaskForm boardId={id} addTask={addTask} />
+      <button
+        onClick={() => removeBoard(id)}
+        className="ml-auto mt-2 text-sm text-red-500 underline"
+      >
+        Delete Board
+      </button>
     </section>
   );
 }

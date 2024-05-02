@@ -32,18 +32,18 @@ export default function AddTaskForm({ boardId, addTask }: Readonly<Props>) {
     <footer>
       <form
         onSubmit={handleAddTask}
-        className="mt-12 flex items-center rounded bg-gray-300 shadow shadow-gray-800/30"
+        className="mt-12 flex items-center rounded bg-gray-300"
       >
         <input
           id={inputId}
           name="task"
           type="text"
           placeholder="Type here..."
-          className="min-w-0 flex-1 rounded bg-transparent px-4 py-2 text-gray-600 placeholder:text-gray-400"
+          className="min-w-0 flex-1 rounded bg-transparent px-4 py-2 placeholder:text-gray-400"
         />
         <button
           aria-label="Add Task"
-          className="grid h-[42px] place-items-center px-4 font-mono text-2xl leading-[1] text-gray-400 transition-colors hover:text-gray-600"
+          className="grid h-[42px] place-items-center px-4 font-mono text-2xl leading-[1] text-gray-500 transition-colors"
         >
           +
         </button>

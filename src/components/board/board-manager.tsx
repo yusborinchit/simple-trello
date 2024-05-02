@@ -6,19 +6,16 @@ import BoardCard from "./board-card";
 
 export default function BoardManager() {
   const { boards, isLoading, ...actions } = useBoard();
-  const { addBoard, changeTitle, addTask, moveTask } = actions;
+  const { addBoard, changeTitle, addTask, moveTask, removeBoard } = actions;
 
   return (
     <>
       {isLoading ? (
         <div className="grid auto-cols-max grid-flow-col gap-4 p-4">
-          {boards.map((board) => (
-            <BoardCardSkeleton
-              key={board.id}
-              title={board.title}
-              tasks={board.tasks}
-            />
-          ))}
+          <BoardCardSkeleton tasks={2} />
+          <BoardCardSkeleton tasks={4} />
+          <BoardCardSkeleton tasks={3} />
+          <BoardCardSkeleton tasks={6} />
         </div>
       ) : (
         <div className="grid auto-cols-max grid-flow-col gap-4 p-4">
@@ -31,6 +28,7 @@ export default function BoardManager() {
               changeTitle={changeTitle}
               addTask={addTask}
               moveTask={moveTask}
+              removeBoard={removeBoard}
             />
           ))}
           <button
