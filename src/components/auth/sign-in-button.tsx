@@ -15,10 +15,10 @@ export default function SignInButton() {
   return (
     <button
       onClick={handleSignIn}
-      className="ml-auto flex items-center gap-2 rounded bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2.5 text-center text-sm font-semibold text-white transition-[filter] hover:brightness-90"
+      className="flex items-center gap-2 rounded bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2.5 text-center text-sm font-semibold text-white transition-[filter] hover:brightness-90"
     >
       <GithubIcon width={20} height={20} />
-      Sign In with Github
+      <span>Sign In with Github</span>
     </button>
   );
 }

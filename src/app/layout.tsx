@@ -1,5 +1,4 @@
 import Background from "@/components/background";
-import Header from "@/components/header/header";
 import "@/styles/globals.css";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -11,11 +10,10 @@ interface Props {
   children: ReactNode;
 }
 
-export default function RootLayout({ children }: Readonly<Props>) {
+export default async function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="en">
       <body className={`${inter.className} text-gray-800`}>
-        <Header />
         {children}
         <Background />
       </body>

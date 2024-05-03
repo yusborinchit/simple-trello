@@ -1,9 +1,13 @@
 import BoardManager from "@/components/board/board-manager";
+import Header from "@/components/header/header";
 
-export default async function Home() {
+export default function HomePage() {
   return (
-    <main className="mt-[calc(64px+16px)] grid">
-      <BoardManager />
-    </main>
+    <>
+      <Header />
+      <main className="mt-[calc(64px+16px)] grid">
+        <BoardManager />
+      </main>
+    </>
   );
 }
