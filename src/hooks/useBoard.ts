@@ -1,10 +1,11 @@
+import {
+  deleteBoard,
+  fetchBoards,
+  insertBoard,
+  updateBoardTitle,
+} from "@/services/board";
+import { insertTask, updateTaskBoard } from "@/services/task";
 import { type Board, type Task } from "@/types";
-import { deleteBoard } from "@/utils/boards/delete-board";
-import { fetchBoards } from "@/utils/boards/fetch-boards";
-import { insertBoard } from "@/utils/boards/insert-board";
-import { updateBoardTitle } from "@/utils/boards/update-title-board";
-import { insertTask } from "@/utils/tasks/insert-task";
-import { updateTaskBoard } from "@/utils/tasks/update-task-board";
 import { useEffect, useState } from "react";
 
 const DEFAULT_BOARD_TITLE = "Board Title";
