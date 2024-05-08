@@ -9,9 +9,6 @@ export default function SignInButton() {
   async function handleSignIn() {
     await supabaseClient.auth.signInWithOAuth({
       provider: "github",
-      options: {
-        redirectTo: "https://simple-trello-iota.vercel.app/",
-      },
     });
   }
 
