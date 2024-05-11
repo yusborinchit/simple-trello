@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import CheckIcon from "../icons/check-icon";
 import EditIcon from "../icons/edit-icon";
@@ -31,7 +32,7 @@ export default function BoardHeader({
   }
 
   return (
-    <header className="flex gap-2">
+    <motion.header layout={"position"} className="flex gap-2">
       {isEditing ? (
         <form onSubmit={handleChangeTitle} className="flex gap-2">
           <input
@@ -63,6 +64,6 @@ export default function BoardHeader({
           </button>
         </>
       )}
-    </header>
+    </motion.header>
   );
 }
